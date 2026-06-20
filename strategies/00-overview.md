@@ -84,3 +84,4 @@
 | `07-orchestrator-spec.md` | Orchestrator Agent 技術規格 |
 | `02-S2-legitimacy-framework.md` | S2 接觸合理性框架（三對象客製化接觸理由）|
 | `02-S2-104-intent-automation-spec.md` | S2 完整自動化流程規格（Make Flow 4）|
+| `02-S2-flow-simulations.md` | S2 端對端流程模擬（3 筆案例：A 級 PASS / C 級 HOLD / B 級 PASS）|
