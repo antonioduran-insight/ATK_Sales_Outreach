@@ -82,3 +82,5 @@
 | `05-talk-scripts.md` | 四套策略完整話術 SOP（Kid-Sales 設計） |
 | `06-ai-user-persona.md` | AI 使用者類型分類 × 話術對應矩陣 |
 | `07-orchestrator-spec.md` | Orchestrator Agent 技術規格 |
+| `02-S2-legitimacy-framework.md` | S2 接觸合理性框架（三對象客製化接觸理由）|
+| `02-S2-104-intent-automation-spec.md` | S2 完整自動化流程規格（Make Flow 4）|
