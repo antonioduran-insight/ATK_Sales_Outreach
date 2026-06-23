@@ -34,7 +34,7 @@ If not, download it from **https://python.org/downloads** and install it.
 
 In your terminal:
 ```bash
-git clone https://github.com/antonioduran-insight/Antonio_Sales_Outreach_automation.git
+git clone -b workshop/participant-setup https://github.com/antonioduran-insight/Antonio_Sales_Outreach_automation.git
 cd Antonio_Sales_Outreach_automation
 ```
 
@@ -147,16 +147,11 @@ Open the `scripts/output/` folder — your file is the most recently created one
 
 ---
 
-## Import into Dripify or Expandi
+## Step 7 — Send your CSV to Antonio
 
-1. Log into Dripify or Expandi
-2. Create a new campaign → **Import leads from CSV**
-3. Upload your CSV file
-4. In the campaign message settings, use:
-   - Connection request: `{{custom1}}`
-   - Follow-up message (Day 3): `{{custom2}}`
+When the pipeline finishes, find your output file in `scripts/output/` — it will be named `dripify_yourname_date_time.csv`
 
-Each lead will receive their own personalised message — `custom1` and `custom2` are filled in per row.
+Send this file to Antonio (Slack or email). He will consolidate all CSVs, remove duplicates, and import them into the team CRM where your leads will be waiting for you.
 
 ---
 
