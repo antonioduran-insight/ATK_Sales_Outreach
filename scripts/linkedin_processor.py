@@ -106,6 +106,7 @@ try:
         "style":        _WS_ACCT["style_hint"],
         "daily_limit":  _WS_ACCT["daily_limit"],
         "send_window":  _WS_ACCT["send_window"],
+        "language":     _WS_ACCT.get("language", "English"),
     }
 except ImportError:
     pass
@@ -142,25 +143,28 @@ def classify(score: int) -> str:
 # ── Claude 訊息草稿生成（帳號人設動態注入）──────────────
 def get_connection_system(account: str) -> str:
     persona = ACCOUNT_PERSONAS.get(account, ACCOUNT_PERSONAS[DEFAULT_ACCOUNT])
+    lang = persona.get("language", "English")
     return f"""You are {persona['display_name']}, {persona['title']}.
 Style: {persona['style']}
-Task: Write a LinkedIn connection request note for the target lead (≤300 characters, in Spanish).
-Rules: Warm and curious, like a message from a peer. No sales pitch. Express genuine interest first. Don't end with "cuento contigo" or similar filler.
+Task: Write a LinkedIn connection request note for the target lead (≤300 characters, in {lang}).
+Rules: Warm and curious, like a message from a peer. No sales pitch. Express genuine interest first.
 Format: Output only the message text, no prefixes or labels."""
 
 
 def get_value_system(account: str) -> str:
     persona = ACCOUNT_PERSONAS.get(account, ACCOUNT_PERSONAS[DEFAULT_ACCOUNT])
+    lang = persona.get("language", "English")
     return f"""You are {persona['display_name']}, {persona['title']}.
 Style: {persona['style']}
-Task: Write the first value-touch message for this lead (in Spanish, ≤500 characters).
+Task: Write the first value-touch message for this lead (in {lang}, ≤500 characters).
 Structure: ① Observation about their situation (tied to their role/company) → ② How AI Token King solves that specific problem → ③ Open-ended question to close.
-Forbidden: Never say "quiero presentarte nuestro producto" or anything that sounds like a sales intro. Provide three message variants: A (manager pain point), B (founder/owner angle), C (efficiency/ROI angle).
+Forbidden: Never open with a sales intro. Provide three message variants: A (manager pain point), B (founder/owner angle), C (efficiency/ROI angle).
 Format: Output only the message text, no prefixes or labels."""
 
 
 def get_reply_system(account: str) -> str:
     persona = ACCOUNT_PERSONAS.get(account, ACCOUNT_PERSONAS[DEFAULT_ACCOUNT])
+    lang = persona.get("language", "English")
     return f"""You are {persona['display_name']}, {persona['title']}.
 Analyze this LinkedIn reply and recommend the next action.
 Output JSON (JSON only, no explanation):
@@ -171,7 +175,7 @@ Output JSON (JSON only, no explanation):
   "key_signal": "key phrase the lead used",
   "route_to": "direct-sales/#leads-direct|channel/#leads-channel|manual/#lead-review",
   "next_action": "next step (one sentence)",
-  "reply_draft": "suggested reply (in Spanish, ≤300 chars)"
+  "reply_draft": "suggested reply (in {lang}, ≤300 chars)"
 }}"""
 
 

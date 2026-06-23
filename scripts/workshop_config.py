@@ -50,6 +50,10 @@ MY_ACCOUNT = {
 
     # Time window for sending (local time). Format: "HH:MM–HH:MM"
     "send_window": "09:00–10:00",
+
+    # Language for AI-generated outreach messages.
+    # Examples: "English", "Traditional Chinese", "Spanish", "Vietnamese"
+    "language": "English",
 }
 
 
