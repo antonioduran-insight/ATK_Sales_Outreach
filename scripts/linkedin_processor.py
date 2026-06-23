@@ -28,7 +28,7 @@ from pathlib import Path
 from typing import Optional
 
 try:
-    import anthropic
+    from openai import OpenAI
     from dotenv import load_dotenv
 except ImportError:
     print("請先安裝：pip install -r requirements.txt")
@@ -40,10 +40,12 @@ except ImportError:
     _requests = None
 
 load_dotenv()
-ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
-MAKE_WEBHOOK_URL   = os.getenv("MAKE_WEBHOOK_URL", "")
-SLACK_WEBHOOK_URL  = os.getenv("SLACK_WEBHOOK_URL", "")
-client_ai = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY) if ANTHROPIC_API_KEY else None
+ATK_API_KEY       = os.getenv("ATK_API_KEY", "")
+ATK_API_BASE      = os.getenv("ATK_API_BASE", "https://api.aitokenking.com.tw/api")
+ATK_MODEL         = os.getenv("ATK_MODEL", "Sonnet")
+MAKE_WEBHOOK_URL  = os.getenv("MAKE_WEBHOOK_URL", "")
+SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL", "")
+client_ai = OpenAI(api_key=ATK_API_KEY, base_url=ATK_API_BASE) if ATK_API_KEY else None
 
 OUTPUT_DIR = Path(__file__).parent / "output"
 OUTPUT_DIR.mkdir(exist_ok=True)
@@ -175,14 +177,16 @@ Output JSON (JSON only, no explanation):
 
 def ai_message(system: str, user_prompt: str, max_tokens: int = 600) -> str:
     if not client_ai:
-        return "[需要 ANTHROPIC_API_KEY 才能生成 AI 訊息]"
-    msg = client_ai.messages.create(
-        model="claude-sonnet-4-6",
+        return "[需要 ATK_API_KEY 才能生成 AI 訊息]"
+    msg = client_ai.chat.completions.create(
+        model=ATK_MODEL,
         max_tokens=max_tokens,
-        system=system,
-        messages=[{"role": "user", "content": user_prompt}],
+        messages=[
+            {"role": "system", "content": system},
+            {"role": "user",   "content": user_prompt},
+        ],
     )
-    return msg.content[0].text.strip()
+    return msg.choices[0].message.content.strip()
 
 
 # ── Webhook / 通知 ─────────────────────────────────────────
