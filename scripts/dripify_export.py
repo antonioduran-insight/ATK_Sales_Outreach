@@ -187,12 +187,13 @@ def save_dripify_csv(rows: list[dict], account: str) -> Path:
     return out
 
 
-CRM_FIELDS = ["NAME", "COMPANY", "STATUS", "TEMP", "ICP", "AREA", "ASSIGNED", "CREATED"]
+CRM_FIELDS = ["NAME", "COMPANY", "STATUS", "TEMP", "ICP", "AREA", "ASSIGNED", "CREATED",
+              "custom1", "custom2", "custom3"]
 
 def save_crm_csv(rows: list[dict], source_data: list[dict], account: str) -> Path:
-    """Export a CRM-compatible CSV matching the team lead tracker columns."""
+    """Export a single CSV with CRM columns + AI-generated messages."""
     ts  = datetime.now().strftime("%Y%m%d_%H%M%S")
-    out = OUTPUT_DIR / f"crm_{account}_{ts}.csv"
+    out = OUTPUT_DIR / f"leads_{account}_{ts}.csv"
 
     # Build a lookup from linkedin URL → source draft/lead for extra fields
     src = {d.get("linkedin_url", d.get("linkedin", "")): d for d in source_data}
@@ -202,13 +203,12 @@ def save_crm_csv(rows: list[dict], source_data: list[dict], account: str) -> Pat
         writer = csv.DictWriter(f, fieldnames=CRM_FIELDS)
         writer.writeheader()
         for r in rows:
-            url  = r.get("linkedin", "")
-            orig = src.get(url, {})
-            name = f"{r.get('first_name', '')} {r.get('last_name', '')}".strip()
-            # Parse TEMP and ICP out of custom3 (format: "ICP:85|HOT")
+            url    = r.get("linkedin", "")
+            orig   = src.get(url, {})
+            name   = f"{r.get('first_name', '')} {r.get('last_name', '')}".strip()
             custom3 = r.get("custom3", "")
-            icp  = orig.get("icp_score", "")
-            temp = orig.get("classification", "")
+            icp    = orig.get("icp_score", "")
+            temp   = orig.get("classification", "")
             if not icp and "ICP:" in custom3:
                 icp = custom3.split("ICP:")[-1].split("|")[0]
             if not temp and "|" in custom3:
@@ -222,6 +222,9 @@ def save_crm_csv(rows: list[dict], source_data: list[dict], account: str) -> Pat
                 "AREA":     r.get("location", ""),
                 "ASSIGNED": account,
                 "CREATED":  today,
+                "custom1":  r.get("custom1", ""),
+                "custom2":  r.get("custom2", ""),
+                "custom3":  custom3,
             })
     return out
 
@@ -316,11 +319,10 @@ def main():
         print("⚠ 無可匯出的資料（確認 classification 為 HOT 或 WARM）")
         sys.exit(0)
 
-    out_path = save_dripify_csv(rows, args.account)
-    crm_path = save_crm_csv(rows, source_data, args.account)
+    out_path = save_crm_csv(rows, source_data, args.account)
     print_summary(rows, out_path, args.account)
-    print(f"  CRM 匯入檔案：{crm_path.name}")
-    print(f"  (Columns: NAME, COMPANY, STATUS, TEMP, ICP, AREA, ASSIGNED, CREATED)")
+    print(f"\n  ✅ Output: {out_path.name}")
+    print(f"  Columns: NAME, COMPANY, STATUS, TEMP, ICP, AREA, ASSIGNED, CREATED, custom1, custom2, custom3")
 
 
 if __name__ == "__main__":

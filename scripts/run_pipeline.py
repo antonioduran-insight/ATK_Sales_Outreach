@@ -10,9 +10,9 @@ Run this after filling in workshop_config.py and .env.
 What it does:
   Step 1 — Scrapes LinkedIn leads matching your search combos (via Apify)
   Step 2 — Generates personalised message drafts in your language (via Claude AI)
-  Step 3 — Exports a ready-to-import CSV for Dripify or Expandi
+  Step 3 — Exports your final CSV (CRM columns + AI messages)
 
-Output: scripts/output/dripify_<yourname>_<timestamp>.csv
+Output: scripts/output/leads_<yourname>_<timestamp>.csv
 """
 
 import subprocess
@@ -100,13 +100,13 @@ def main():
 
     # ── Step 3: Export ───────────────────────────────────────────────
     run_step(
-        "STEP 3 / 3 — Exporting Dripify / Expandi import CSV",
+        "STEP 3 / 3 — Exporting final CSV (CRM columns + AI messages)",
         [PYTHON, "dripify_export.py",
          f"output/{drafts_json}",
          "--account", MY_ACCOUNT_KEY],
     )
 
-    final_csv = latest(f"dripify_{MY_ACCOUNT_KEY}_*.csv") or latest("dripify_*.csv")
+    final_csv = latest(f"leads_{MY_ACCOUNT_KEY}_*.csv") or latest("leads_*.csv")
 
     print(f"\n{'=' * 60}")
     print(f"  ✅  PIPELINE COMPLETE")
@@ -114,8 +114,7 @@ def main():
     if final_csv:
         print(f"\n  Your output CSV:")
         print(f"  📄  scripts/output/{final_csv}")
-        print(f"\n  Import this file into Dripify or Expandi to launch your campaign.")
-        print(f"  Set your campaign messages to {{{{custom1}}}} and {{{{custom2}}}}.")
+        print(f"\n  Send this file to Antonio (Slack or email).")
     print()
 
 

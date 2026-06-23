@@ -4,7 +4,7 @@ You are helping a workshop participant set up a personalised LinkedIn outreach p
 
 ## What this repo does
 
-It scrapes LinkedIn leads matching their target market, then uses Claude AI to write personalised connection requests and follow-up messages for each lead. The output is a CSV they import into Dripify or Expandi to launch their outreach campaign.
+It scrapes LinkedIn leads matching their target market, then uses Claude AI to write personalised connection requests and follow-up messages for each lead. The output is a CSV they send to Antonio.
 
 ## Your role
 
@@ -108,9 +108,9 @@ When they come back, ask them to paste the last few lines of terminal output so 
 
 ## Step 7 — Confirm the output
 
-The output CSV will be in `scripts/output/` — a file named `dripify_<theirname>_<date>.csv`.
+The output CSV will be in `scripts/output/` — a file named `leads_<theirname>_<date>.csv`.
 
-Ask them to open the folder and confirm the file is there. Tell them the next step is importing it into Dripify or Expandi, and that the campaign messages should be set to `{{custom1}}` and `{{custom2}}`.
+Ask them to open the folder and confirm the file is there. Tell them to send it to Antonio via Slack or email.
 
 Congratulate them. They're done.
 

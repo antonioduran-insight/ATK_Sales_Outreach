@@ -131,13 +131,11 @@ You'll see three steps run in sequence with progress updates in the terminal.
 | 2 — Draft | Claude AI writes personalised messages for each lead | ~10 min |
 | 3 — Export | Generates your final CSV | < 1 min |
 
-Go make a coffee after starting Step 1. The script will wait for you.
-
 ---
 
 ## Step 7 — Send your CSV to Antonio
 
-When the pipeline finishes, find your output file in `scripts/output/` — it will be named `dripify_yourname_date_time.csv`
+When the pipeline finishes, find your output file in `scripts/output/` — it will be named `leads_yourname_date_time.csv`
 
 Send this file to Antonio (Slack or email). He will consolidate all CSVs, remove duplicates, and import them into the team CRM where your leads will be waiting for you.
 
