@@ -9,7 +9,7 @@ No technical background needed — just follow the steps in order.
 
 ## What you'll build
 
-By the end, you'll have a CSV file you can import directly into Dripify or Expandi.
+By the end, you'll have a CSV file ready to send to Antonio.
 It contains personalised LinkedIn connection request notes and follow-up messages written by Claude AI — one unique message per lead, tailored to that person's background.
 
 ---
@@ -132,18 +132,6 @@ You'll see three steps run in sequence with progress updates in the terminal.
 | 3 — Export | Generates your final CSV | < 1 min |
 
 Go make a coffee after starting Step 1. The script will wait for you.
-
----
-
-## Step 7 — Find your output CSV
-
-When the pipeline finishes, it tells you exactly where your file is:
-
-```
-📄  scripts/output/dripify_yourname_20260617_HHMMSS.csv
-```
-
-Open the `scripts/output/` folder — your file is the most recently created one.
 
 ---
 
