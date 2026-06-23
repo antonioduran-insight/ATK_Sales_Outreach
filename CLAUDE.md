@@ -67,7 +67,7 @@ Tell them you're going to help them fill in their config file, and you'll ask a 
 
 Ask these questions one at a time:
 
-1. **"What's your name?"** (just first name or full name — this goes in messages)
+1. **"What's your first name?"** (this is important — it will be used to tag your leads in the shared CRM so Antonio can assign them back to you after merging)
 2. **"What's your role and company?"** (e.g. "Head of Growth at Acme AI")
 3. **"In one or two sentences — how would you describe your outreach style? Are you warm and curious? Direct and data-driven? Think about how you'd introduce yourself to a stranger at a conference."**
 4. **"What job titles are you trying to reach?"** (e.g. Founders, Marketing Managers, CTOs — ask them to list 3–6)
@@ -83,7 +83,7 @@ Ask these questions one at a time:
 
 Once you have their answers, open `scripts/workshop_config.py` and fill it in for them.
 
-- Set `MY_ACCOUNT_KEY` to their first name in lowercase (e.g. `"sarah"`)
+- Set `MY_ACCOUNT_KEY` to their first name in lowercase (e.g. `"sarah"`) — this tags every lead in their CSV so Antonio can identify and assign them after merging all participants' files
 - Fill in `MY_ACCOUNT` with their name, title, and style
 - Set `MY_GEOS` to their chosen countries
 - Update `MY_SEARCH_COMBOS` to match their target titles and market — keep 2–3 combos, adjust `title_keywords` to their ICP, set `"limit": 20` for now
