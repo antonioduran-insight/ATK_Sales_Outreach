@@ -34,7 +34,7 @@ If not, download it from **https://python.org/downloads** and install it.
 
 In your terminal:
 ```bash
-git clone -b workshop/participant-setup https://github.com/antonioduran-insight/Antonio_Sales_Outreach_automation.git
+git clone -b workshop/participant-setup https://github.com/antonioduran-insight/ATK_Sales_Outreach.git
 cd Antonio_Sales_Outreach_automation
 ```
 
