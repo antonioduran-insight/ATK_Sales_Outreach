@@ -307,6 +307,7 @@ def cmd_draft(csv_path: str, account: str = DEFAULT_ACCOUNT):
             "name":               lead.get("name"),
             "title":              lead.get("title"),
             "company":            lead.get("company"),
+            "location":           lead.get("location", ""),
             "icp_score":          lead.get("icp_score"),
             "classification":     lead.get("classification"),
             "linkedin_url":       lead.get("linkedin_url"),
