@@ -51,8 +51,10 @@ ACCOUNTS = {
               "style": "親切 ENFJ 風格，直接切痛點，主動但不卑微"},
     "lauren":{"display_name": "Lauren", "title": "商務暨人資主管, AI Token King",
               "style": "BD 合作視角，著重效率痛點與 AI 工具帶來的利潤提升"},
+    "antonio": {"display_name": "Antonio", "title": "Marketing & Business Development, AI Token King",
+                "style": "Warm and analytical, peer-to-peer. Cross-cultural bridge between Asian tech and LATAM. Empathetic, never pushy."},
 }
-DEFAULT_ACCOUNT = "kid"
+DEFAULT_ACCOUNT = "antonio"
 
 # ── AI 使用者類型定義 ─────────────────────────────────────
 AI_USER_TYPES = {
@@ -133,32 +135,32 @@ def analyze_lead(lead: dict) -> dict:
         return {"ai_type": "B", "development_logic": "（需 API Key 才能分析）",
                 "career_turning_point": "", "next_goal": "", "recommended_angle": ""}
 
-    prompt = f"""你是頂級業務分析師，專精 LinkedIn 個人檔案解讀。
+    prompt = f"""You are a top business analyst specializing in LinkedIn profile interpretation.
 
-請分析以下 Lead 的背景資料，輸出 JSON（只輸出 JSON，不加任何說明）：
+Analyze the following lead's background and output JSON (JSON only, no explanation):
 
-Lead 資料：
-姓名：{lead.get('name', '')}
-職稱：{lead.get('title', '')}
-公司：{lead.get('company', '')}
-個人摘要：{lead.get('summary_snippet', '')}
-搜尋組合：{lead.get('combo_name', '')}
+Lead data:
+Name: {lead.get('name', '')}
+Title: {lead.get('title', '')}
+Company: {lead.get('company', '')}
+Summary: {lead.get('summary_snippet', '')}
+Search combo: {lead.get('combo_name', '')}
 
-AI 使用者類型定義：
-A = 身份建構者：正在重新定義自己，AI 是升級標籤的工具
-B = 效率優化者：靠把事情做好建立價值，AI 是省時省力的工具
-C = 影響力建構者：建立個人品牌，AI 是加速觀點傳播的工具
-D = 組織決策者：KPI 是整個組織成果，AI 是降低轉型風險的工具
+AI user type definitions:
+A = Identity Builder: redefining themselves, AI is a tool to upgrade their personal brand
+B = Efficiency Maximizer: builds value by getting things done, AI saves time and effort
+C = Influence Builder: building personal brand, AI accelerates idea distribution
+D = Organizational Decision Maker: KPI is the whole org's outcome, AI reduces transformation risk
 
-請判斷並輸出：
+Determine type and output (all text fields in Spanish):
 {{
   "ai_type": "A|B|C|D",
   "ai_type_confidence": "high|medium|low",
-  "development_logic": "50字以內：他從哪裡來、怎麼走到現在、職涯方向是什麼",
-  "career_turning_point": "20字以內：他履歷中最關鍵的一個轉折點（沒有就留空）",
-  "next_goal": "20字以內：他現在的狀態在為什麼目標鋪路",
-  "recommended_angle": "30字以內：我們應該以什麼身份出現在他的發展路徑上",
-  "personalization_hook": "30字以內：連線邀請中最能讓他有感的切入點（要具體，不能是通用句子）"
+  "development_logic": "≤50 words in Spanish: where they came from, how they got here, career direction",
+  "career_turning_point": "≤20 words in Spanish: the most pivotal transition in their career (leave blank if none)",
+  "next_goal": "≤20 words in Spanish: what their current state is building toward",
+  "recommended_angle": "≤30 words in Spanish: the role we should play in their development path",
+  "personalization_hook": "≤30 words in Spanish: the most resonant entry point for a connection invite (be specific, not generic)"
 }}"""
 
     msg = client_ai.messages.create(
@@ -193,30 +195,30 @@ def generate_s1_scripts(lead: dict, analysis: dict, account: str) -> dict:
 絕對不推銷、不用「介紹產品」這類措辭。
 所有訊息都要讓對方感覺「這個人真的研究過我」。"""
 
-    prompt = f"""請為以下 Lead 生成 S1 策略三封信序列。
+    prompt = f"""Generate the S1 strategy 3-message sequence for the following lead. All messages must be written in Spanish.
 
-Lead 分析結果：
-- 姓名：{lead.get('name', '對方')}
-- 職稱：{lead.get('title', '')}
-- 公司：{lead.get('company', '')}
-- 個人摘要：{lead.get('summary_snippet', '')[:300]}
-- AI 使用者類型：{ai_type}（{type_info['name']}）
-- 發展邏輯：{analysis.get('development_logic', '')}
-- 職涯轉折點：{analysis.get('career_turning_point', '')}
-- 他的下一個目標：{analysis.get('next_goal', '')}
-- 建議切入角色：{analysis.get('recommended_angle', '')}
-- 個人化鉤子：{analysis.get('personalization_hook', '')}
-- 他的核心恐懼：{type_info['core_fear']}
-- AI Token King 對他的意義：{type_info['atk_value']}
-- 第三封的框架：{type_info['angle']}
+Lead analysis:
+- Name: {lead.get('name', 'the person')}
+- Title: {lead.get('title', '')}
+- Company: {lead.get('company', '')}
+- Summary: {lead.get('summary_snippet', '')[:300]}
+- AI user type: {ai_type} ({type_info['name']})
+- Development logic: {analysis.get('development_logic', '')}
+- Career turning point: {analysis.get('career_turning_point', '')}
+- Next goal: {analysis.get('next_goal', '')}
+- Recommended angle: {analysis.get('recommended_angle', '')}
+- Personalization hook: {analysis.get('personalization_hook', '')}
+- Core fear: {type_info['core_fear']}
+- What AI Token King means for them: {type_info['atk_value']}
+- Frame for message 3: {type_info['angle']}
 
-請輸出 JSON（只輸出 JSON）：
+Output JSON (JSON only, all message text in Spanish):
 {{
-  "connection_request": "連線邀請附言，≤200字，不推銷，讓他感覺你研究過他。結尾不要說「請多指教」",
-  "msg1": "第一封私訊，連線接受後 Day 1，≤300字，問一個讓他想回答的問題，結尾說「純粹好奇，沒有要推銷任何東西」",
-  "msg2_with_reply": "第二封（對方有回覆版），≤300字，複述他說的觀點 → 提供低門檻資訊 → 讓他說好",
-  "msg2_no_reply": "第二封（對方無回覆追蹤版），≤250字，換個角度再試一次，給他一個優雅的出口",
-  "msg3": "第三封引入方案，≤350字，以「成為他所需角色」為框架，切入點是他的發展邏輯，而不是產品功能，結尾邀請 20 分鐘"
+  "connection_request": "connection invite note, ≤200 chars, no pitch, make them feel you researched them. Don't end with filler phrases.",
+  "msg1": "first DM, Day 1 after connection accepted, ≤300 chars, ask a question they want to answer, end with 'solo curiosidad, sin intención de vender nada'",
+  "msg2_with_reply": "second message (lead replied version), ≤300 chars, mirror their point → offer low-friction info → invite a yes",
+  "msg2_no_reply": "second message (no-reply follow-up), ≤250 chars, try a different angle, give them an elegant out",
+  "msg3": "third message introducing the solution, ≤350 chars, frame as becoming the partner they need, entry point is their development logic not product features, close with an invitation for 20 minutes"
 }}"""
 
     msg = client_ai.messages.create(

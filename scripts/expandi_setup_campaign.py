@@ -3,10 +3,10 @@
 Expandi Campaign Setup Script
 Usage: python3 scripts/expandi_setup_campaign.py
 
-Creates "S1-Frank-20260615" Sales Navigator campaign in Expandi with:
+Creates "S1-Antonio-20260616" Sales Navigator campaign in Expandi with:
 - 4-step sequence: Visit Profile → Connect → Day1 Message → Day7 Follow-up
-- 15 leads from lead-drafts/s1-batch-20260615-expandi.csv
-- 25 connections/day, 08:00-09:00 Taipei time
+- Leads from lead-drafts/s1-batch-20260615-expandi.csv
+- 20 connections/day, 09:00-10:00 Taiwan time
 
 Credentials: set EXPANDI_API_KEY and EXPANDI_API_SECRET env vars,
 or edit the constants below.
@@ -19,6 +19,9 @@ import sys
 import time
 import requests
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv(Path(__file__).parent / ".env")
 
 # ── Credentials (set via env vars, do NOT commit actual values) ──────────────
 API_KEY    = os.environ.get("EXPANDI_API_KEY")
@@ -29,12 +32,12 @@ if not API_KEY or not API_SECRET:
     sys.exit(1)
 
 BASE_URL   = "https://api.expandi.io/api/v1"
-CSV_PATH   = Path(__file__).parent.parent / "lead-drafts" / "s1-batch-20260615-expandi.csv"
+CSV_PATH   = Path(__file__).parent / "output" / "dripify_antonio_20260617_200306.csv"
 
-CAMPAIGN_NAME     = "S1-Frank-20260615"
-DAILY_LIMIT       = 25
-WORKING_HOURS_START = 8   # 08:00 Taipei (UTC+8)
-WORKING_HOURS_END   = 9   # 09:00 Taipei
+CAMPAIGN_NAME       = "S1-Antonio-20260616"
+DAILY_LIMIT         = 20
+WORKING_HOURS_START = 9   # 09:00 Taiwan time (Antonio's working hours)
+WORKING_HOURS_END   = 10  # 10:00 Taiwan time
 
 # ── Session setup ─────────────────────────────────────────────────────────────
 session = requests.Session()
@@ -58,17 +61,17 @@ def api(method, path, **kwargs):
 
 
 def step1_get_account():
-    """Get Frank's LinkedIn account ID."""
+    """Get Antonio's LinkedIn account ID."""
     print("1. Fetching LinkedIn accounts...")
     data = api("get", "/accounts")
     accounts = data if isinstance(data, list) else data.get("data", [data])
     print(f"   Found {len(accounts)} account(s):")
     for a in accounts:
         print(f"   - [{a.get('id')}] {a.get('name')} | {a.get('email')} | {a.get('status')}")
-    # Return first active account (Frank)
+    # Return first active account (Antonio)
     active = [a for a in accounts if a.get("status") in ("active", "connected", None)]
     if not active:
-        raise RuntimeError("No active accounts found. Connect Frank's LinkedIn in Expandi first.")
+        raise RuntimeError("No active accounts found. Connect Antonio's LinkedIn in Expandi first.")
     chosen = active[0]
     print(f"   ✓ Using account: {chosen.get('name')} (id={chosen.get('id')})")
     return chosen["id"]
@@ -175,7 +178,7 @@ def step5_activate_campaign(campaign_id):
 
 def main():
     print("=" * 60)
-    print("Expandi Campaign Setup — S1-Frank-20260615")
+    print(f"Expandi Campaign Setup — {CAMPAIGN_NAME}")
     print("=" * 60)
 
     if not CSV_PATH.exists():
@@ -202,7 +205,7 @@ def main():
         print(f"\n✗ API Error: {e}")
         print("Check that:")
         print("  1. EXPANDI_API_KEY / EXPANDI_API_SECRET are correct")
-        print("  2. Frank's LinkedIn account is connected in Expandi")
+        print("  2. Antonio's LinkedIn account is connected in Expandi")
         print("  3. Your Expandi plan supports Sales Navigator campaigns")
         sys.exit(1)
     except Exception as e:
